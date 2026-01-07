@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-pt" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ponto API</title>
+    <link rel="icon" href="/ponto.ico" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dist/foton_framework.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="ft-navbar">
+        <div class="ft-navbar-container">
+            <a href="index.html" class="ft-logo">Ponto<span class="fa-solid fa-note-sticky"></span></a>
+            <div style="display: flex; gap: 1em; align-items: center;">
+                <!-- Filtro status -->
+                <div class="select-status">
+                    <select id="filtro-status" class="ft-input"
+                        style="height: 44px; padding: 0 10px; font-size: 0.9em;">
+                        <option value="">Todos Status</option>
+                        <option value="1">Pendente</option>
+                        <option value="3">Em Andamento</option>
+                        <option value="2">Concluída</option>
+                    </select>
+                </div>
+                <!-- Barra de pesquisa -->
+                <div class="ft-input-group search-bar" style="max-width: 350px;">
+                    <input id="filtro-titulo" type="text" class="ft-input-field" placeholder="Pesquisar...">
+                    <button class="ft-btn ft-btn-secondary" id="btn-pesquisar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+                <!-- Imagem de perfil -->
+                <div class="ft-avatar ft-avatar-md">
+                    <img src="https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=A1A1A1"
+                        alt="imagem de perfil">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container-1">
+            <!-- Barra de pesquisa Mobile -->
+            <div class="ft-input-group search-bar-mobile" style="max-width: 350px;">
+                <input id="filtro-titulo-mobile" type="text" class="ft-input-field" placeholder="Pesquisar...">
+                <button class="ft-btn ft-btn-secondary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <!-- Botão para abrir Modal de Criação -->
+            <button class="ft-btn ft-btn-primary btn-add-task" data-toggle="modal" data-target="modalCriar">
+                <i class="fa-solid fa-plus" style="margin-right: 1em;"></i>
+                Adicionar Tarefa
+            </button>
+
+            <!-- 1. MODAL CRIAR -->
+            <div class="ft-modal" id="modalCriar">
+                <div class="ft-modal-dialog">
+                    <div class="ft-modal-content">
+                        <div class="ft-modal-header">
+                            <h4 class="ft-modal-title">Nova Tarefa</h4>
+                            <button class="ft-close" data-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="ft-modal-body">
+                            <form id="form-criar-tarefa">
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Título</label>
+                                    <input class="ft-input" type="text" id="addTitulo" required>
+                                </div>
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Vencimento</label>
+                                    <input class="ft-input" type="date" id="addData" required>
+                                </div>
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Descrição</label>
+                                    <textarea class="ft-input" id="addDescricao" required></textarea>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                    <div>
+                                        <label class="ft-label">Prioridade</label>
+                                        <select class="ft-input" id="addPrioridade" required>
+                                            <option value="1">Alta</option>
+                                            <option value="2">Média</option>
+                                            <option value="3" selected>Baixa</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="ft-label">Status</label>
+                                        <select class="ft-input" id="addStatus" required>
+                                            <option value="1">Pendente</option>
+                                            <option value="3">Em Andamento</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ft-modal-footer" style="padding: 1.5rem 0 0 0; border: none;">
+                                    <button type="button" class="ft-btn ft-btn-sm ft-btn-secondary"
+                                        data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="ft-btn ft-btn-sm ft-btn-success">Criar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. MODAL EDITAR -->
+            <div class="ft-modal" id="modalEditar">
+                <div class="ft-modal-dialog">
+                    <div class="ft-modal-content">
+                        <div class="ft-modal-header">
+                            <h4 class="ft-modal-title">Editar Tarefa</h4>
+                            <button class="ft-close" data-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="ft-modal-body">
+                            <form id="form-editar-tarefa">
+                                <input type="hidden" id="editId">
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Título</label>
+                                    <input class="ft-input" type="text" id="editTitulo" required>
+                                </div>
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Vencimento</label>
+                                    <input class="ft-input" type="date" id="editData" required>
+                                </div>
+                                <div class="ft-form-group">
+                                    <label class="ft-label">Descrição</label>
+                                    <textarea class="ft-input" id="editDescricao" required></textarea>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                    <div>
+                                        <label class="ft-label">Prioridade</label>
+                                        <select class="ft-input" id="editPrioridade" required></select>
+                                    </div>
+                                    <div>
+                                        <label class="ft-label">Status</label>
+                                        <select class="ft-input" id="editStatus" required></select>
+                                    </div>
+                                </div>
+                                <div class="ft-modal-footer" style="padding: 1.5rem 0 0 0; border: none;">
+                                    <button type="button" class="ft-btn ft-btn-sm ft-btn-secondary"
+                                        data-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="ft-btn ft-btn-sm ft-btn-warning">Salvar
+                                        Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MODAL VISUALIZAR -->
+            <div class="ft-modal" id="modalVisualizar">
+                <div class="ft-modal-dialog">
+                    <div class="ft-modal-content">
+                        <div class="ft-modal-header">
+                            <h4 class="ft-modal-title">Detalhes da Tarefa</h4>
+                            <button class="ft-close" data-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="ft-modal-body" id="view-content">
+
+                        </div>
+                        <div class="ft-modal-footer">
+                            <button class="ft-btn ft-btn-sm ft-btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MODAL EXCLUIR (NOVO) -->
+            <div class="ft-modal" id="modalExcluir">
+                <div class="ft-modal-dialog">
+                    <div class="ft-modal-content">
+                        <div class="ft-modal-header">
+                            <h4 class="ft-modal-title">Confirmar Exclusão</h4>
+                            <button class="ft-close" data-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="ft-modal-body">
+                            <p>Tem certeza que deseja excluir a tarefa: <strong id="excluir-tarefa-titulo"
+                                    class="ft-text-primary"></strong>?</p>
+                            <p class="ft-text-muted" style="margin-top: 10px; font-size: 0.9em;">Esta ação não poderá
+                                ser desfeita.</p>
+                        </div>
+                        <div class="ft-modal-footer" style="border: none;">
+                            <input type="hidden" id="excluir-tarefa-id">
+                            <button type="button" class="ft-btn ft-btn-sm ft-btn-secondary"
+                                data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="ft-btn ft-btn-sm ft-btn-danger"
+                                id="btn-confirmar-exclusao">Excluir Tarefa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em;">
+                    <h2 style="margin: 0;">Tarefas</h2>
+
+                    <!-- Dropdown de Ordenação Fóton -->
+                    <div class="ft-dropdown">
+                        <button class="ft-text-muted"
+                            style="background: transparent; border: none; font-size: 0.85em; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 0;"
+                            data-toggle="popover">
+                            <i class="fa-solid fa-sort" style="font-size: 0.8em;"></i>
+                            <span id="ordenar-label">Data</span>
+                        </button>
+                        <ul class="ft-dropdown-menu" id="ordenar-menu">
+                            <li><a class="ft-dropdown-item" href="#" data-sort="data">Data</a></li>
+                            <li><a class="ft-dropdown-item" href="#" data-sort="titulo">Título (A-Z)</a></li>
+                            <li><a class="ft-dropdown-item" href="#" data-sort="prioridade">Prioridade</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul id="lista-tarefas" class="task-ul"></ul>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+    <script src="dist/foton_scripts.js"></script>
+</body>
+
+</html>
